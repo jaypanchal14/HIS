@@ -1,0 +1,34 @@
+Milestone-1:
+
+1)To add/update/delete/modify working hours slots for all workers. (Functionality to modify calendar)
+2)As personal details can be modified by the worker itself, few details should be modifiable by the admin only. 
+Like whether it is working/or not,off duty/leave/left the hospital.
+3)Seconary available workers in case primary isn't reachable.
+4)Help center for query resolution of workers
+
+Stakeholders:
+Admin:
+Resource management (relevant details add/update/modify)
+Slot scheduling and management
+Help center and query resolution
+
+--------------------
+Nurse:
+Registering patients as OP/IP
+Calendar functionality
+Ward management and shifting from OP to IP
+Patient details retrieval/modification to few fields
+Diagnosis/Reviews addition
+Presciptions check-up
+
+--------------------
+Doctor:
+Patient details retrieval/modification to few fields
+Calendar functionality
+Diagnosis/reviews addition
+Presciptions check-up and addition
+
+
+--------------------
+Pharmacist
+--------------------
