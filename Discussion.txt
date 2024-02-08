@@ -30,5 +30,20 @@ Presciptions check-up and addition
 
 
 --------------------
-Pharmacist
+Pharmacist:
+Can see (previous/yet to be) delivered to be delivered prescriptions
 --------------------
+
+Functionalities:
+1) email API
+2) Photo storage : storage with email-id, removing domain and special character, append time-stamp
+3) Before adding doctor, nurse, pharmacist, confirm the uniqueness of the email-id.
+4) Need to maintain login session
+5) Our system will notify(increment the counter live-update) the doctor after a nurse adds a new patient.
+6) At the time of patient registration, check if it's already present or not 
+
+Consent questions:
+1) consent for saving personal/diagnosis details in the database?
+2) consent for sharing details between hospital/govr bodies?
+3) consent before registration? if yes, go ahead, other go home as we are not registering
+4) consent for sharing between doctors
