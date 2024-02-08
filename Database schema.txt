@@ -1,0 +1,33 @@
+Login details
+username (email) [should be unique]
+password
+identifier : with certain prefix like DOC, NUR, PHA [primary-key]
+lastCreated
+lastUpdated
+roles : admin, doctor, nurse, pharmacist
+
+
+Personal details
+identifier (Primary and secondary from login details)
+first-name, last-name, phone-number, birth-date, gender, blood-group, specialization (can be null)
+experience (graduation month and year), photo-storage path, address, createdAt, updatedAt
+
+
+patients details
+identifier, first-name, last-name, gender, birth-date, blood-group, phone-number, email(can be null), 
+address(can be null), , first-visit, createDate, updatedAt
+
+admit details:
+admit-id, patient-id, is_In_Patient, room-id, createdAt
+
+diagnosis
+diagnosis-id, admit-id, patient-id, doctor-id, remarks, date
+
+prescriptions:
+identifier(diagnosis-id from diagnosis table), prescription-id, patient-id, doctor-id, 
+pharmasict-id, name, count, date
+
+wards:
+room-number, patient-id, type, is_allotted
+
+
