@@ -48,3 +48,4 @@ Consent questions:
 2) consent for sharing details between hospital/govr bodies?
 3) consent before registration? if yes, go ahead, other go home as we are not registering
 4) consent for sharing between doctors
+5) functionality to bypass consent in critical situation.
