@@ -11,6 +11,7 @@ Admin:
 Resource management (relevant details add/update/modify)
 Slot scheduling and management
 Help center and query resolution
+functionality to deactivate roles.
 
 --------------------
 Nurse:
