@@ -1,0 +1,118 @@
+Common API requests:
+
+a)Endpoint: 
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+
+Base url : https://localhost:8080/his
+Header : JWT_Token (After successful authentication only)
+Roles : ADMIN,DOCTOR,NURSE,PHARMACIST,RECEPTIONIST
+
+Some API requests which are going to be used by specific person and admin as well.
+1) To authenticate : [used by all roles]
+
+a)Endpoint: /authenticate
+b)Request method: POST
+c)Request parameters: None
+d)Request body:
+{
+	"username": "user",
+	"password": "12345678"
+}
+e)Path variable: None
+f)Response body:
+(i) In case of successful verification : (With JWT token in return)
+{
+	"response" : "SUCCESS",
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response" : "FAILED",
+	"error": "reason of failure"
+}
+
+2) To view personal details : [used by all to see their personal details,after clicking on profile-icon or button]
+a)Endpoint: /personalDetails
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR&id=<unique-id (surrogate)>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case user exists:
+{
+	"response": {
+		"name": "Harshil Buha",
+		"email": "hb@gmail.com",
+		"phone": "9126543458",
+		"gender": "male",
+		"department: "Neurological",
+		"specialization": "Can be null",
+		"pastExperience": 10,
+		"isHeadNurse": false,
+		"blood": "A+",
+		"address": "Amreli, Gujarat",
+		"birthDate": "24-04-2002",
+		"imagePath": "harshil.jpeg"
+	},
+	"error": null
+}
+(ii) In case it doesn't exist:
+{
+	"response": null,
+	"error": "user not found"
+}
+
+3) To change the password:
+a)Endpoint: /changePassword
+b)Request method: PUT
+c)Request parameters: ?id=<user_id>
+d)Request body:
+{
+	"oldPassword": "23456781",
+	"newPassword": "11111111"
+}
+e)Path variable: None
+f)Response body:
+(i) In case of successful update:
+{
+	"response": "SUCCESS",
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": "FAILED",
+	"error": "reason of failure"
+}
+
+4) View schedule details based on user:
+a)Endpoint: /scheduleDetails
+b)Request method: GET
+c)Request parameters: ?id=<user_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		"id"  :   "user-id",
+		"role": "DOCTOR",
+		"mon": 1,
+		"tue": 2,
+		"wed": 1,
+		"thu": 2,
+		"fri": 1,
+		"sat": 1,
+		"sun": 0
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "user not found or any other reason"
+}
+
