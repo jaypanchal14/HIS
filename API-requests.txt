@@ -10,8 +10,8 @@ f)Response body:
 Base url : https://localhost:8080/his
 Header : JWT_Token (After successful authentication only)
 Roles : ADMIN,DOCTOR,NURSE,PHARMACIST,RECEPTIONIST
-
-Some API requests which are going to be used by specific person and admin as well.
+----------------------------------------------------------------------------------------------------------------------------------
+**********************************************************COMMON REQUEST**********************************************************
 1) To authenticate : [used by all roles]
 
 a)Endpoint: /authenticate
@@ -34,18 +34,21 @@ f)Response body:
 	"response" : "FAILED",
 	"error": "reason of failure"
 }
+_____________________________________________________________________________________
+
 
 2) To view personal details : [used by all to see their personal details,after clicking on profile-icon or button]
 a)Endpoint: /personalDetails
 b)Request method: GET
-c)Request parameters: ?role=DOCTOR&id=<unique-id (surrogate)>
+c)Request parameters: ?role=DOCTOR&id=<unique-id(surrogate)>
 d)Request body: None
 e)Path variable: None
 f)Response body:
 (i) In case user exists:
 {
 	"response": {
-		"name": "Harshil Buha",
+		"firstName": "Harshil",
+		"lastName": "Buha",
 		"email": "hb@gmail.com",
 		"phone": "9126543458",
 		"gender": "male",
@@ -65,6 +68,7 @@ f)Response body:
 	"response": null,
 	"error": "user not found"
 }
+_____________________________________________________________________________________
 
 3) To change the password:
 a)Endpoint: /changePassword
@@ -87,6 +91,7 @@ f)Response body:
 	"response": "FAILED",
 	"error": "reason of failure"
 }
+_____________________________________________________________________________________
 
 4) View schedule details based on user:
 a)Endpoint: /scheduleDetails
@@ -98,7 +103,7 @@ f)Response body:
 (i) In case of positive case:
 {
 	"response": {
-		"id"  :   "user-id",
+		"id"  : "user-id",
 		"role": "DOCTOR",
 		"mon": 1,
 		"tue": 2,
@@ -115,4 +120,759 @@ f)Response body:
 	"response": null,
 	"error": "user not found or any other reason"
 }
+_____________________________________________________________________________________
 
+5) Update profile details:
+a)Endpoint: /updateProfile
+b)Request method: POST
+c)Request parameters: ?id=<user_id>
+d)Request body:
+{
+	"firstName": "Harshil",
+	"lastName": "Buha",
+	"phone": "9126543458",
+	"department": "Neurological",
+	"specialization": "Can be null",
+	"isHeadNurse": false,
+	"address": "Amreli, Gujarat",
+	"imagePath": "harshil.jpeg"
+}
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		"firstName": "Harshil",
+		"lastName": "Buha",
+		"email": "hb@gmail.com",
+		"phone": "9126543458",
+		"gender": "male",
+		"department": "Neurological",
+		"specialization": "Can be null",
+		"pastExperience": 10,
+		"isHeadNurse": false,
+		"blood": "A+",
+		"address": "Amreli, Gujarat",
+		"birthDate": "24-04-2002",
+		"imagePath": "harshil.jpeg"
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "user not found or any other reason"
+}
+_____________________________________________________________________________________
+
+6) To view live-patients by doctor and nurse only
+a)Endpoint: /patient/viewLivePatients
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR&isOP=1&id=<doctor_id>      //Here isOP=1, means it is OP, otherwise patient is IP
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"patientId": "asdfgjkl",
+			"admitId": "asdfghjk",
+			"firstName": "Harshil",
+			"lastName": "Buha",
+			"phone": "9126543458",
+			"gender": "male",
+			"blood": "A+",
+			"wardNo": "A12",
+			"address": "Amreli, Gujarat",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg",
+			"date": "11-02-2024 10:00:00.000000"
+		},
+		{
+			"patientId": "asdfgjkl",
+			"admitId": "asdfghjk",
+			"firstName": "Harshil",
+			"lastName": "Buha",
+			"phone": "9126543458",
+			"gender": "male",
+			"blood": "A+",
+			"wardNo": "A12",
+			"address": "Amreli, Gujarat",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg",
+			"date": "11-02-2024 10:00:00.000000"
+		}
+		
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "Invalid doctor-id or any other reason"
+}
+
+_____________________________________________________________________________________
+
+7) To view details about any particular live-patient by doctor and nurse
+a)Endpoint: /patient/viewOneLivePatient
+b)Request method: GET
+c)Request parameters: ?role=NURSE&id=<staff_id>&patientId=<patient_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		"patientId": "asdfgjkl",
+		"admitId": "asdfghjk",
+		"firstName": "Harshil",
+		"lastName": "Buha",
+		"phone": "9126543458",
+		"gender": "male",
+		"blood": "A+",
+		"address": "Amreli, Gujarat",
+		"birthDate": "24-04-2002",
+		"imagePath": "harshil.jpeg",
+		"date": "11-02-2024 10:00:00.000000"
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "NURSE doesn't have access to view past-history of patient or any other reason"
+}
+
+8) View emergency by doctor or nurse  [NEED TO CLARIFY HOW TO HANDLE THE SCREEN-FLOW AND BACKEND]
+a)Endpoint: /patient/emergencies
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR&id=<doctor_id>  or ?role=NURSE&id=<nurse_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+***************************************************************ADMIN**************************************************************
+1) To add different user and their personal details
+a)Endpoint: /admin/addUser
+b)Request method: POST
+c)Request parameters: None
+d)Request body:
+{
+	"personal": {
+		"role": "DOCTOR/NURSE/PHARMACIST/RECEPTIONIST",  //Any one from the allowed role
+		"firstName": "Harshil",
+		"lastName": "Buha",
+		"email": "hb@gmail.com",
+		"phone": "9126543458",
+		"gender": "male",
+		"department": "Neurological",  //Can be null
+		"specialization": "Can be null or some value",  //Can be null
+		"pastExperience": 0,
+		"isHeadNurse": false,  //Only applicable for nurse
+		"blood": "A+",
+		"address": "Amreli, Gujarat",
+		"birthDate": "24-04-2002",
+		"imagePath": "harshil.jpeg"  //Optional
+	},
+	"shift": {   //Only in case of doctor or nurse, for receptionist and pharmacist, the object would be null
+		"mon": 1,
+		"tue": 2,
+		"wed": 1,
+		"thu": 2,
+		"fri": 1,
+		"sat": 1,
+		"sun": 0
+	}
+}
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{	
+	"response": "SUCCESS",
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": "FAILED",
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+2) View different active staff members, here admin can see all doctors if we don't pass any particular user_id, similarly for other staff-member
+a)Endpoint: /admin/viewUsers
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"firstName": "Harshil",
+			"lastName": "Buha",
+			"email": "hb@gmail.com",
+			"phone": "9126543458",
+			"gender": "male",
+			"department": "Neurological",
+			"specialization": "Can be null or some value",
+			"pastExperience": 0,
+			"isHeadNurse": false,
+			"blood": "A+",
+			"address": "Amreli, Gujarat",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg"
+		},
+		{
+			"firstName": "ads",
+			"lastName": "sdasda",
+			"email": "aa@gmail.com",
+			"phone": "9126543458",
+			"gender": "Female",
+			"department": "Mental",
+			"specialization": "Can be null or some value",
+			"pastExperience": 0,
+			"isHeadNurse": false,
+			"blood": "A+",
+			"address": "Space, Galaxy",
+			"birthDate": "24-04-2002",
+			"imagePath": "jaadu.jpeg"
+		}
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular role/user_id is not found or any other reason"
+}
+
+_____________________________________________________________________________________
+
+3) To update the schedule of doctor or nurse
+a)Endpoint: /admin/updateSchedule
+b)Request method: POST
+c)Request parameters: ?role=DOCTOR&id=<user_id>
+d)Request body:
+{
+	"shift": {
+		"mon": 1,
+		"tue": 2,
+		"wed": 1,
+		"thu": 2,
+		"fri": 1,
+		"sat": 1,
+		"sun": 0
+	}
+}
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{	
+	"response": "SUCCESS",
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": "FAILED",
+	"error": "User is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+4) To activate or de-activate the staff-member (To activate or de-activate staff)
+a)Endpoint: /admin/updateAccountStatus
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR&id=<user_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{	
+	"response": "SUCCESS",
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": "FAILED",
+	"error": "User is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+5)
+a)Endpoint: /admin/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+***************************************************************DOCTOR*************************************************************
+1) Add diagnosis
+a)Endpoint: /doc/addDiagnosis
+b)Request method: POST
+c)Request parameters: None
+d)Request body:
+{
+	"diagnosis": {
+	},
+	"prescription": [
+		{
+			"name": "asd",
+			"days": 1,
+			"count": 2
+		},
+		{
+			"name": "asd",
+			"days": 1,
+			"count": 2
+		}
+	]
+}
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+2) View past-history of a single patient
+a)Endpoint: /doc/pastHistoryOnePatient
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR&id=<user_id>&patientId=<patient_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"admint": {
+				"admitId": "234134tyh5egwdascv",
+				"diagnosis": {},
+				"prescription": [
+					{
+						"name": "asd",
+						"days": 1,
+						"count": 2
+					},
+					{
+						"name": "asd",
+						"days": 1,
+						"count": 2
+					}
+				]
+			}
+		},
+		{
+			"admint": {
+				"admitId": "234134tyh5egwdascv",
+				"diagnosis": {},
+				"prescription": [
+					{
+						"name": "asd",
+						"days": 1,
+						"count": 2
+					},
+					{
+						"name": "asd",
+						"days": 1,
+						"count": 2
+					}
+				]
+			}
+		}
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+3) View past treated patients
+a)Endpoint: /doc/pastPatients
+b)Request method: GET
+c)Request parameters: ?role=DOCTOR&id=<doctor_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"patientId": "asdfgjkl",
+			"firstName": "Harshil",
+			"lastName": "Buha",
+			"phone": "9126543458",
+			"gender": "male",
+			"blood": "A+",
+			"wardNo": "A12",
+			"address": "Amreli, Gujarat",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg",
+			"date": "11-02-2024 10:00:00.000000"
+		},
+		{
+			"patientId": "asdfgjkl",
+			"firstName": "Harshil",
+			"lastName": "Buha",
+			"phone": "9126543458",
+			"gender": "male",
+			"blood": "A+",
+			"wardNo": "A12",
+			"address": "Amreli, Gujarat",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg",
+			"date": "11-02-2024 10:00:00.000000"
+		}
+		
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+***************************************************************NURSE**************************************************************
+1)
+a)Endpoint: /nurse/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+2)
+a)Endpoint: /nurse/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+3)
+a)Endpoint: /nurse/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+4)
+a)Endpoint: /nurse/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+5)
+a)Endpoint: /nurse/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+***************************************************************PHARMACIST*********************************************************
+1) View previous sold prescriptions
+a)Endpoint: /pharma/viewHistory
+b)Request method: GET
+c)Request parameters: id=<pharma_id>
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"admitId": "234134tyh5egwdascv",
+			"date": "11-02-2024 10:10:10.000000",
+			"prescription": [
+				{
+					"name": "asd",
+					"count": 2
+				},
+				{
+					"name": "asd",
+					"count": 2
+				}
+			]
+		},
+		{
+			"admitId": "234134tyh5egwdascv",
+			"date": "11-02-2024 10:10:10.000000",
+			"prescription": [
+				{
+					"name": "asd",
+					"count": 2
+				},
+				{
+					"name": "asd",
+					"count": 2
+				}
+			]
+		}
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "Invalid  or any other reason"
+}
+
+_____________________________________________________________________________________
+
+2)
+a)Endpoint: /pharma/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+*************************************************************RECEPTIONIST*********************************************************
+1)
+a)Endpoint: /reception/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+2)
+a)Endpoint: /reception/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+3)
+a)Endpoint: /reception/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+4)
+a)Endpoint: /reception/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+_____________________________________________________________________________________
+
+5)
+a)Endpoint: /reception/
+b)Request method:
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
