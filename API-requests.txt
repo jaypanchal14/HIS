@@ -974,9 +974,15 @@ ________________________________________________________________________________
 
 3) View if patient is already in hospital (To just retrieve if currently is admitted)
 a)Endpoint: /reception/isPatientPresent
-b)Request method: GET
-c)Request parameters: ?role=RECEPTIONIST&id=<receptionist_id>&patientId=<aadhar_no>
-d)Request body: None
+b)Request method: POST
+c)Request parameters: None
+d)Request body: Receptionist can check either via patient-name or patient-aadhar, not both
+{
+	"receptionId": "<receptionist-id>",
+	"patientId": "aadhar",
+	"patientfirstName": "xyz",
+	"patientLastName": "xyz"
+}
 e)Path variable: None
 f)Response body:
 (i) In case of positive case:
