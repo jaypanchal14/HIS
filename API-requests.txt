@@ -20,6 +20,7 @@ c)Request parameters: None
 d)Request body:
 {
 	"username": "user",
+	"role": "DOCTOR",
 	"password": "12345678"
 }
 e)Path variable: None
@@ -73,7 +74,7 @@ ________________________________________________________________________________
 3) To change the password:
 a)Endpoint: /changePassword
 b)Request method: PUT
-c)Request parameters: ?id=<user_id>
+c)Request parameters: ?role=NURSE&id=<user_id>
 d)Request body:
 {
 	"oldPassword": "23456781",
@@ -125,7 +126,7 @@ ________________________________________________________________________________
 5) Update profile details:
 a)Endpoint: /updateProfile
 b)Request method: POST
-c)Request parameters: ?id=<user_id>
+c)Request parameters: ?role=DOCTOR&id=<user_id>
 d)Request body:
 {
 	"firstName": "Harshil",
@@ -245,7 +246,72 @@ f)Response body:
 	"error": "NURSE doesn't have access to view past-history of patient or any other reason"
 }
 
-8) View emergency by doctor or nurse  [NEED TO CLARIFY HOW TO HANDLE THE SCREEN-FLOW AND BACKEND]
+
+8) To view diagnosis by doctor and nurse (Here, nurse can only see live patient's diagnosis)
+a)Endpoint: /patient/getDiagnosis
+b)Request method: POST
+c)Request parameters: ?role=DOCTOR&id=<doctor_id>  or ?role=NURSE&id=<nurse_id>
+d)Request body: 
+{
+	"patientId": "patient-aadhar",
+	"admitId": "adsfamshfsdf"
+}
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"diagnosisId": "sgffada",
+			"patientId": "patiend-aadhar",
+			"admintId": "adsfamshfsdf",
+			"remarks": "symptoms of fever",
+			"file": "any report or file path",
+			"date": "11-02-2024 11:11:11.000000",
+			"prescription": [
+				{
+					"name": "asd",
+					"days": 1,
+					"count": 2
+				},
+				{
+					"name": "asd",
+					"days": 1,
+					"count": 2
+				}
+			]
+		},
+		{
+			"diagnosisId": "sgffada",
+			"patientId": "patiend-aadhar",
+			"admintId": "adsfamshfsdf",
+			"remarks": "symptoms of fever",
+			"file": "any report or file path",
+			"date": "11-02-2024 11:11:11.000000",
+			"prescription": [
+				{
+					"name": "asd",
+					"days": 1,
+					"count": 2
+				},
+				{
+					"name": "asd",
+					"days": 1,
+					"count": 2
+				}
+			]
+		}
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "Invalid user or any other reason"
+}
+
+
+9) View emergency by doctor or nurse  [NEED TO CLARIFY HOW TO HANDLE THE SCREEN-FLOW AND BACKEND]
 a)Endpoint: /patient/emergencies
 b)Request method: GET
 c)Request parameters: ?role=DOCTOR&id=<doctor_id>  or ?role=NURSE&id=<nurse_id>
@@ -290,7 +356,7 @@ d)Request body:
 		"birthDate": "24-04-2002",
 		"imagePath": "harshil.jpeg"  //Optional
 	},
-	"shift": {   //Only in case of doctor or nurse, for receptionist and pharmacist, the object would be null
+	"shift": {   //Only in case of doctor or nurse, otherwise for receptionist and pharmacist -> the object would be null
 		"mon": 1,
 		"tue": 2,
 		"wed": 1,
@@ -399,9 +465,14 @@ ________________________________________________________________________________
 
 4) To activate or de-activate the staff-member (To activate or de-activate staff)
 a)Endpoint: /admin/updateAccountStatus
-b)Request method: GET
-c)Request parameters: ?role=DOCTOR&id=<user_id>
-d)Request body: None
+b)Request method: POST
+c)Request parameters: ?adminId=<admin-id>
+d)Request body: 
+{
+	"role": "DOCTOR",
+	"userId": "doctor-id",
+	"action": "A/D"   //A : to activate account, D : to deactivate account
+}
 e)Path variable: None
 f)Response body:
 (i) In case of positive case:
@@ -440,14 +511,17 @@ f)Response body:
 ----------------------------------------------------------------------------------------------------------------------------------
 ***************************************************************DOCTOR*************************************************************
 1) Add diagnosis
-a)Endpoint: /doc/addDiagnosis
+a)Endpoint: /doc/addDiagnosis?id=<doctor_id>
 b)Request method: POST
 c)Request parameters: None
 d)Request body:
 {
 	"diagnosis": {
-	},
-	"prescription": [
+		"patientId": "patiend-aadhar",
+		"admintId": "adsfasd",
+		"remarks":"symptoms of fever",
+		"file":"any report or file path",  //Can be null
+		"prescription": [
 		{
 			"name": "asd",
 			"days": 1,
@@ -459,14 +533,14 @@ d)Request body:
 			"count": 2
 		}
 	]
+	}
+	
 }
 e)Path variable: None
 f)Response body:
 (i) In case of positive case:
 {
-	"response": {
-		
-	},
+	"response": "SUCCESS",
 	"error": null
 }
 (ii) In case of failure:
@@ -488,40 +562,54 @@ f)Response body:
 {
 	"response": [
 		{
-			"admint": {
-				"admitId": "234134tyh5egwdascv",
-				"diagnosis": {},
-				"prescription": [
-					{
-						"name": "asd",
-						"days": 1,
-						"count": 2
-					},
-					{
-						"name": "asd",
-						"days": 1,
-						"count": 2
-					}
-				]
-			}
+			"admitId": "234134tyh5egwdascv",
+			"date": "11-02-2024 10.10.10.100100",
+			"diagnosis": [
+				{
+					"diagnosisId": "sgffada",
+					"patientId": "patiend-aadhar",
+					"remarks": "symptoms of fever",
+					"file": "any report or file path",
+					"date": "11-02-2024 11:11:11.000000",
+					"prescription": [
+						{
+							"name": "asd",
+							"days": 1,
+							"count": 2
+						},
+						{
+							"name": "asd",
+							"days": 1,
+							"count": 2
+						}
+					]
+				}
+			]
 		},
 		{
-			"admint": {
-				"admitId": "234134tyh5egwdascv",
-				"diagnosis": {},
-				"prescription": [
-					{
-						"name": "asd",
-						"days": 1,
-						"count": 2
-					},
-					{
-						"name": "asd",
-						"days": 1,
-						"count": 2
-					}
-				]
-			}
+			"admitId": "234134tyh5egwdascv",
+			"date": "11-02-2024 10.10.10.100100",
+			"diagnosis": [
+				{
+					"diagnosisId": "sgffada",
+					"patientId": "patiend-aadhar",
+					"remarks": "symptoms of fever",
+					"file": "any report or file path",
+					"date": "11-02-2024 11:11:11.000000",
+					"prescription": [
+						{
+							"name": "asd",
+							"days": 1,
+							"count": 2
+						},
+						{
+							"name": "asd",
+							"days": 1,
+							"count": 2
+						}
+					]
+				}
+			]
 		}
 	],
 	"error": null
@@ -551,7 +639,6 @@ f)Response body:
 			"phone": "9126543458",
 			"gender": "male",
 			"blood": "A+",
-			"wardNo": "A12",
 			"address": "Amreli, Gujarat",
 			"birthDate": "24-04-2002",
 			"imagePath": "harshil.jpeg",
@@ -564,7 +651,6 @@ f)Response body:
 			"phone": "9126543458",
 			"gender": "male",
 			"blood": "A+",
-			"wardNo": "A12",
 			"address": "Amreli, Gujarat",
 			"birthDate": "24-04-2002",
 			"imagePath": "harshil.jpeg",
@@ -585,18 +671,80 @@ f)Response body:
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ***************************************************************NURSE**************************************************************
-1)
-a)Endpoint: /nurse/
-b)Request method:
-c)Request parameters:
-d)Request body:
-e)Path variable:
+1) For head-nurse only (View available nurse)
+a)Endpoint: /nurse/onShiftNurse
+b)Request method: GET
+c)Request parameters: ?role=NURSE&id=<nurse_id>
+d)Request body: None
+e)Path variable: None
 f)Response body:
 (i) In case of positive case:
 {
-	"response": {
-		
-	},
+	"response": [
+		{
+			"firstName": "nurse",
+			"lastName": "first",
+			"email": "hb@gmail.com",
+			"phone": "9126543458",
+			"gender": "Female",
+			"department": "General ward",
+			"specialization": "Can be null or some value",
+			"pastExperience": 0,
+			"blood": "A+",
+			"address": "Gujarat",
+			"birthDate": "24-04-2002",
+			"imagePath": "no-one.jpeg"
+		},
+		{
+			"firstName": "nurse",
+			"lastName": "second",
+			"email": "second@gmail.com",
+			"phone": "9126543411",
+			"gender": "Female",
+			"department": "Cardio",
+			"specialization": "Can be null or some value",
+			"pastExperience": 0,
+			"blood": "A+",
+			"address": "Space, Galaxy",
+			"birthDate": "24-04-2002",
+			"imagePath": "jaadu.jpeg"
+		}
+	],
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "Nurse doesn't have privilege to see or any other reason"
+}
+
+_____________________________________________________________________________________
+
+2) View ward-details
+a)Endpoint: /nurse/getWard
+b)Request method: GET
+c)Request parameters: ?role=NURSE&id=>nurse-id>&type=ALL    //ALL will return all the ward details, EMPTY will return EMPTY bed details
+d)Request body: None
+e)Path variable: None
+f)Response body:
+(i) In case of positive case:
+{
+	"response": [
+		{
+			"wardNo": "A212",
+			"type": "GENERAL",
+			"inDate": "10-02-2024 10:10:10.000000",
+			"isEmpty": 0,     //In case of allotted
+			"patientId": "patient-aadhar"
+		},
+		{
+			"wardNo": "A212",
+			"type": "GENERAL",
+			"inDate": null,
+			"isEmpty": 1,      //In case of empty ward
+			"patientId": "patient-aadhar"
+		}
+	],
 	"error": null
 }
 (ii) In case of failure:
@@ -607,40 +755,21 @@ f)Response body:
 
 _____________________________________________________________________________________
 
-2)
-a)Endpoint: /nurse/
-b)Request method:
-c)Request parameters:
+3) Allocate or discharge a patient from a ward
+a)Endpoint: /nurse/updateWard/:nurseId
+b)Request method: POST
+c)Request parameters: None
 d)Request body:
-e)Path variable:
+{
+	"patientId": "patient-aadhar",
+	"wardNo": "R111",
+	"action": "A/D"		//A : to allot, D : discharge
+}
+e)Path variable: <nurse_id>
 f)Response body:
 (i) In case of positive case:
 {
-	"response": {
-		
-	},
-	"error": null
-}
-(ii) In case of failure:
-{
-	"response": null,
-	"error": "particular field is not present or any other reason"
-}
-
-_____________________________________________________________________________________
-
-3)
-a)Endpoint: /nurse/
-b)Request method:
-c)Request parameters:
-d)Request body:
-e)Path variable:
-f)Response body:
-(i) In case of positive case:
-{
-	"response": {
-		
-	},
+	"response": "SUCCESS",
 	"error": null
 }
 (ii) In case of failure:
@@ -706,6 +835,7 @@ f)Response body:
 {
 	"response": [
 		{
+			"patientName" : "name",
 			"admitId": "234134tyh5egwdascv",
 			"date": "11-02-2024 10:10:10.000000",
 			"prescription": [
@@ -720,6 +850,7 @@ f)Response body:
 			]
 		},
 		{
+			"patientName" : "name",
 			"admitId": "234134tyh5egwdascv",
 			"date": "11-02-2024 10:10:10.000000",
 			"prescription": [
@@ -767,64 +898,112 @@ f)Response body:
 
 ----------------------------------------------------------------------------------------------------------------------------------
 *************************************************************RECEPTIONIST*********************************************************
-1)
-a)Endpoint: /reception/
-b)Request method:
-c)Request parameters:
-d)Request body:
-e)Path variable:
+1) view schedule of available doctor for the whole day
+a)Endpoint: /reception/viewSchedule
+b)Request method: GET
+c)Request parameters: ?role=RECEPTIONIST&id=<receptionist_id>
+d)Request body: None
+e)Path variable: None
 f)Response body:
 (i) In case of positive case:
 {
-	"response": {
-		
-	},
+	"response": [
+		{
+			"firstName": "DOCTOR",
+			"lastName": "name",
+			"email": "nahihe@abc.aa",
+			"phone": "9126543458",
+			"gender": "male",
+			"blood": "A+",
+			"address": "address",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg"
+		},
+		{
+			"firstName": "DOCTOR",
+			"lastName": "name",
+			"email": "nahihe@abc.aa",
+			"phone": "9126543458",
+			"gender": "male",
+			"blood": "A+",
+			"address": "address",
+			"birthDate": "24-04-2002",
+			"imagePath": "harshil.jpeg"
+		}
+	],
 	"error": null
 }
 (ii) In case of failure:
 {
 	"response": null,
-	"error": "particular field is not present or any other reason"
+	"error": "Doesn't have access to check the details or any other reason"
 }
 
 _____________________________________________________________________________________
 
-2)
-a)Endpoint: /reception/
-b)Request method:
-c)Request parameters:
-d)Request body:
-e)Path variable:
+2) Register new patient
+a)Endpoint: /reception/registerPatient/:receptionistId
+b)Request method: POST
+c)Request parameters: None
+d)Request body: 
+{
+	"firstName": "Harshil",
+	"lastName": "Buha",
+	"email": "",
+	"phone": "9126543458",
+	"gender": "male",
+	"blood": "A+",
+	"address": "Amreli, Gujarat",
+	"birthDate": "24-04-2002",
+	"imagePath": "harshil.jpeg",
+}
+e)Path variable: receptionistId (who will be calling this API)
 f)Response body:
 (i) In case of positive case:
-{
-	"response": {
-		
-	},
+{	
+	"response": "SUCCESS",
 	"error": null
 }
 (ii) In case of failure:
 {
-	"response": null,
+	"response": "FAILED",
 	"error": "particular field is not present or any other reason"
 }
 
 _____________________________________________________________________________________
 
-3)
-a)Endpoint: /reception/
-b)Request method:
-c)Request parameters:
-d)Request body:
-e)Path variable:
+3) View if patient is already in hospital (To just retrieve if currently is admitted)
+a)Endpoint: /reception/isPatientPresent
+b)Request method: GET
+c)Request parameters: ?role=RECEPTIONIST&id=<receptionist_id>&patientId=<aadhar_no>
+d)Request body: None
+e)Path variable: None
 f)Response body:
 (i) In case of positive case:
 {
 	"response": {
-		
+		"patientId": "asdfgjkl",
+		"firstName": "Harshil",
+		"lastName": "Buha",
+		"phone": "9126543458",
+		"gender": "male",
+		"wardNo": "A12",
+		"isPresent": "YES",
+		"imagePath": "harshil.jpeg",
+		"date": "11-02-2024 10:00:00.000000"
 	},
 	"error": null
 }
+
+OR
+//In case the patient is not currently admitted in the hospital
+{
+	"response": {
+		"isPresent": "NO"
+	},
+	"error": null
+}
+
 (ii) In case of failure:
 {
 	"response": null,
