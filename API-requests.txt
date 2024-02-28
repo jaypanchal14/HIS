@@ -174,7 +174,7 @@ f)Response body:
 }
 _____________________________________________________________________________________
 
-6) To view live-patients by doctor and nurse only
+6) To view live-patients [by doctor and nurse only]
 a)Endpoint: /patient/viewLivePatients
 b)Request method: GET
 c)Request parameters: ?role=DOCTOR&isOP=1&id=<doctor_id>      //Here isOP=1, means it is OP, otherwise patient is IP
@@ -224,7 +224,7 @@ f)Response body:
 
 _____________________________________________________________________________________
 
-7) To view details about any particular live-patient by doctor and nurse
+7) To view details about any particular live-patient [by doctor and nurse]
 a)Endpoint: /patient/viewOneLivePatient
 b)Request method: GET
 c)Request parameters: ?role=NURSE&id=<staff_id>&patientId=<patient_id>
