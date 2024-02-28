@@ -1,15 +1,19 @@
-Common API requests:
+*******************************************************API DOCUMENTATION**********************************************************
 
+Base url : https://localhost:8080/his
+Header : JWT_Token (After successful authentication only)
+Roles : ADMIN,DOCTOR,NURSE,PHARMACIST,RECEPTIONIST
+
+<start>
+Format of the API requests
 a)Endpoint: 
 b)Request method:
 c)Request parameters:
 d)Request body:
 e)Path variable:
 f)Response body:
+<end>
 
-Base url : https://localhost:8080/his
-Header : JWT_Token (After successful authentication only)
-Roles : ADMIN,DOCTOR,NURSE,PHARMACIST,RECEPTIONIST
 ----------------------------------------------------------------------------------------------------------------------------------
 **********************************************************COMMON REQUEST**********************************************************
 1) To authenticate : [used by all roles]
@@ -28,6 +32,7 @@ f)Response body:
 (i) In case of successful verification : (With JWT token in return)
 {
 	"response" : "SUCCESS",
+	"token" : "<jwt-token>",
 	"error": null
 }
 (ii) In case of failure:
@@ -97,13 +102,16 @@ ________________________________________________________________________________
 4) View schedule details based on user:
 a)Endpoint: /scheduleDetails
 b)Request method: GET
-c)Request parameters: ?id=<user_id>
+c)Request parameters: ?role=DOCTOR&id=<user_email>
 d)Request body: None
 e)Path variable: None
 f)Response body:
 (i) In case of positive case:
 {
 	"response": {
+		"email" : "user-email@asd,com",
+		"firstName" : "Sini",
+		"lastName" : "Maheshwari",
 		"id"  : "user-id",
 		"role": "DOCTOR",
 		"mon": 1,
@@ -488,7 +496,30 @@ f)Response body:
 
 _____________________________________________________________________________________
 
-5)
+5) Get count of staff members in the hospital
+a)Endpoint: /admin/getCount
+b)Request method: GET
+c)Request parameters: ?adminId=<admin-id>
+d)Request body: None
+e)Path variable: 
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		"doctor" : "4",
+		"nurse" : "8",
+		"receptionist" : "3",
+		"pharmacist" : "2"
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
+
+6)
 a)Endpoint: /admin/
 b)Request method:
 c)Request parameters:
@@ -521,6 +552,9 @@ d)Request body:
 		"admintId": "adsfasd",
 		"remarks":"symptoms of fever",
 		"file":"any report or file path",  //Can be null
+		"isLast": 1,     //if {1-> [OP-> the patient will get the diagnosis and go, IP -> To discharge and vacant the ward],
+				 //    0-> [OP-> patient need to check with another doctor or wait, IP-> to remain in hospital bed]}
+		"toTransit": 1,  // to change from OP to IP
 		"prescription": [
 		{
 			"name": "asd",
@@ -666,8 +700,25 @@ f)Response body:
 	"error": "particular field is not present or any other reason"
 }
 
-
-
+4)
+a)Endpoint: /doc/
+b)Request method: GET
+c)Request parameters:
+d)Request body:
+e)Path variable:
+f)Response body:
+(i) In case of positive case:
+{
+	"response": {
+		
+	},
+	"error": null
+}
+(ii) In case of failure:
+{
+	"response": null,
+	"error": "particular field is not present or any other reason"
+}
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ***************************************************************NURSE**************************************************************
