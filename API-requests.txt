@@ -875,19 +875,19 @@ f)Response body:
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ***************************************************************PHARMACIST*********************************************************
-1) View previous sold prescriptions
+1) View previous sold prescriptions history for all or either for specific diagnosisId
 a)Endpoint: /pharma/viewHistory
 b)Request method: GET
-c)Request parameters: id=<pharma_id>
+c)Request parameters: id=<pharma_id>&diagnosisId=<diagnosisId>
 d)Request body: None
 e)Path variable: None
 f)Response body:
-(i) In case of positive case:
+(i) In case of positive case: (for whole history)
 {
 	"response": [
 		{
 			"patientName" : "name",
-			"admitId": "234134tyh5egwdascv",
+			"diagnosisId": "234134tyh5egwdascv",
 			"date": "11-02-2024 10:10:10.000000",
 			"prescription": [
 				{
@@ -902,7 +902,7 @@ f)Response body:
 		},
 		{
 			"patientName" : "name",
-			"admitId": "234134tyh5egwdascv",
+			"diagnosisId": "234134tyh5egwdascv",
 			"date": "11-02-2024 10:10:10.000000",
 			"prescription": [
 				{
