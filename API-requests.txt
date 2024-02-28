@@ -878,8 +878,12 @@ f)Response body:
 1) View previous sold prescriptions history for all or either for specific diagnosisId
 a)Endpoint: /pharma/viewHistory
 b)Request method: GET
-c)Request parameters: id=<pharma_id>&diagnosisId=<diagnosisId>
-d)Request body: None
+c)Request parameters: id=<pharma_id>
+d)Request body:
+{
+	"startDate" : "10-02-2024 00.00.00.000000",
+	"endDate" : "20-02-2024 23.59.59.999999"
+}
 e)Path variable: None
 f)Response body:
 (i) In case of positive case: (for whole history)
@@ -926,17 +930,29 @@ f)Response body:
 
 _____________________________________________________________________________________
 
-2)
-a)Endpoint: /pharma/
-b)Request method:
-c)Request parameters:
-d)Request body:
-e)Path variable:
+2) Get the diagnosis by the particular diagnosis-id
+a)Endpoint: /pharma/viewByDiagnosis/:<pharmaId>
+b)Request method: GET
+c)Request parameters: ?diagnosisId=<diagnosisId>
+d)Request body: None
+e)Path variable: Pharma-id
 f)Response body:
 (i) In case of positive case:
 {
 	"response": {
-		
+		"patientName" : "name",
+		"diagnosisId": "234134tyh5egwdascv",
+		"date": "11-02-2024 10:10:10.000000",
+		"prescription": [
+			{
+				"name": "asd",
+				"count": 2
+			},
+			{
+				"name": "asd",
+				"count": 2
+			}
+		]
 	},
 	"error": null
 }
